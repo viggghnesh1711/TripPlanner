@@ -106,7 +106,7 @@ const signInWithGoogle = async () => {
       localStorage.removeItem("pendingTripId");
     }
 
-    router.push("/dashboard");
+    router.push("/Dashboard");
   } catch (error) {
     console.error("Sign in failed:", error);
     toast.error("Sign in failed ⚠️");
