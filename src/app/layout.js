@@ -1,13 +1,9 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono,Poppins } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/Context/AuthContext";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const pop = Poppins({
+  weight:"400",
   subsets: ["latin"],
 });
 
@@ -20,9 +16,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+        className={`${pop.className} antialiased`}>
+         <AuthProvider>{children}</AuthProvider>
+         
       </body>
     </html>
   );
