@@ -78,8 +78,9 @@ function Page({ params }) {
       {userData ? (
        <div>
          <Nav user={userData} />
-         {/* <Invite tripid={tripid}/> */}
+         
           <TripOverviewCard tripId={tripid}/>
+          <Invite tripid={tripid}/>
           <HorizontalScrollContributions tripId={tripid}/>
          <BottomNavBar tripid={tripid} />
        </div>
