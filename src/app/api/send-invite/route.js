@@ -14,7 +14,13 @@ export async function POST(request) {
         from: 'no-reply@fittrack.fun',
         to: email,
         subject: 'Trip Invite! 🚀',
-        html: `<p>You’re invited to join a trip! <a href="${tripLink}">Click here to join</a></p>`,
+        html: `<p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; color: #333;">
+  You’re invited to join a trip! 
+  <a href="${tripLink}" style="color: #7D5FFF; font-weight: 600; text-decoration: none; transition: color 0.3s;">
+    Click here to join 🚀
+  </a>
+</p>
+`,
       });
     }
 

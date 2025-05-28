@@ -56,7 +56,7 @@ export default function Invite({tripid}) {
   return (
     <div className="p-6">
       <button 
-        className="bg-stone-600 text-white px-4 py-2 rounded"
+        className="bg-green-600 text-white px-5 py-3 rounded-xl "
         onClick={() => setShowForm(true)}
       >
         Invite People
@@ -64,52 +64,43 @@ export default function Invite({tripid}) {
 
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <form 
-            onSubmit={handleInvite} 
-            className="bg-white p-6 rounded-md shadow-md w-[400px]"
-          >
-            <h2 className="text-lg font-semibold mb-4">Enter Emails to Invite</h2>
+  <form 
+    onSubmit={handleInvite} 
+    className="bg-white p-6 rounded-md shadow-md w-[400px]"
+  >
+    <h2 className="text-lg font-semibold mb-4">Enter Email to Invite</h2>
 
-            {emails.map((email, i) => (
-              <div key={i} className="flex mb-3">
-                <input
-                  type="email"
-                  placeholder="Enter email"
-                  value={email}
-                  onChange={(e) => handleEmailChange(i, e.target.value)}
-                  required={i === 0} // require first input
-                  className="flex-grow border border-gray-300 px-3 py-2 rounded-l-md focus:outline-none"
-                />
-                {i === emails.length - 1 && (
-                  <button
-                    type="button"
-                    onClick={addEmailInput}
-                    className="bg-stone-600 text-white px-3 rounded-r-md"
-                  >
-                    Add Email
-                  </button>
-                )}
-              </div>
-            ))}
+    {/* Only one email input, no add button */}
+    <div className="flex mb-3">
+      <input
+        type="email"
+        placeholder="Enter email"
+        value={emails[0] || ""}
+        onChange={(e) => handleEmailChange(0, e.target.value)}
+        required
+        className="flex-grow border border-gray-300 px-3 py-2 rounded-md focus:outline-none"
+      />
+    </div>
 
-            <div className="flex justify-between mt-6">
-              <button
-                type="button"
-                onClick={() => setShowForm(false)}
-                className="px-4 py-2 border rounded border-gray-400"
-              >
-                Cancel
-              </button>
+    <div className="flex justify-between mt-6">
+      <button
+        type="button"
+        onClick={() => setShowForm(false)}
+        className="px-4 py-2 border rounded border-gray-400"
+      >
+        Cancel
+      </button>
 
-              <button
-                type="submit"
-                className="bg-stone-700 text-white px-4 py-2 rounded"
-              >
-                Invite
-              </button>
-            </div>
-          </form>
-        </div>
+      <button
+        type="submit"
+        className="bg-stone-700 text-white px-4 py-2 rounded"
+      >
+        Invite
+      </button>
+    </div>
+  </form>
+</div>
+
       )}
     </div>
   );

@@ -6,89 +6,89 @@ import BottomNavBar from '@/components/Bottombar';
 import { Toaster } from 'react-hot-toast';
 import Nav from '@/components/Nav';
 import { db } from '@/lib/firebase'; 
-import { onSnapshot,collection, addDoc,doc,updateDoc,setDoc,getDoc, serverTimestamp, arrayUnion } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import Invite from '@/components/Invite';
 import Loading from '@/components/Loading';
 import HorizontalScrollContributions from '@/components/Detailone';
 import TripOverviewCard from '@/components/Two';
-
+import Delete from '@/components/Delete';
 
 function Page({ params }) {
-    const { user, loading } = useAuth();
-    const [userData, setUserData] = useState(null);
-    const router = useRouter();
-    const { tripid } = params;
+  const { user, loading } = useAuth();
+  const [userData, setUserData] = useState(null);
+  const [tripData, setTripData] = useState(null);
+  const router = useRouter();
+  const { tripid } = params;
 
-    useEffect(() => {
+  useEffect(() => {
     if (!loading && !user) {
-      router.push("/"); 
+      router.push("/");
     }
 
-     const fetchUserDetails = async () => {
+    const fetchData = async () => {
       if (user) {
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
 
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setUserData(data);
-          console.log("User data from Firestore:", data);
+        const tripRef = doc(db, "trips", tripid);
+        const tripSnap = await getDoc(tripRef);
 
-        } else {
-          console.log("No such user doc found!");
+        if (userSnap.exists()) {
+          setUserData(userSnap.data());
         }
-      } else {
-        router.push("/"); 
+
+        if (tripSnap.exists()) {
+          setTripData(tripSnap.data());
+        }
       }
     };
 
-    if (!loading) {
-      fetchUserDetails();
-    }
-
-  }, [loading, user, router]);   
+    if (!loading) fetchData();
+  }, [loading, user, tripid, router]);
 
   return (
-        <div className='w-full h-screen bg-stone-200'>
-       <Toaster
+    <div className='w-full h-screen bg-stone-200'>
+      <Toaster
         position="top-center"
         toastOptions={{
           style: {
-            background: '#8a8a7f', // stone grayish tone, not too dark, chill vibe
-            color: '#f5f5f2',      // off-white, easy on eyes
-            boxShadow: '0 4px 12px rgba(138, 138, 127, 0.4)', // subtle stone-colored shadow
-            borderRadius: '8px',   // smooth corners
+            background: '#8a8a7f',
+            color: '#f5f5f2',
+            boxShadow: '0 4px 12px rgba(138, 138, 127, 0.4)',
+            borderRadius: '8px',
             fontWeight: '500',
             fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
             padding: '12px 20px',
           },
           success: {
-            style: {
-              background: '#6b705c', // earthy greenish-brown for success
-              color: '#f5f5f2',
-            }
+            style: { background: '#6b705c', color: '#f5f5f2' }
           },
           error: {
-            style: {
-              background: '#9d0208', // muted brick red for error, fits stone mood but stands out
-              color: '#f5f5f2',
-            }
+            style: { background: '#9d0208', color: '#f5f5f2' }
           }
-        }}/>
-      {userData ? (
-       <div>
-         <Nav user={userData} />
-         
-          <TripOverviewCard tripId={tripid}/>
-          <Invite tripid={tripid}/>
-          <HorizontalScrollContributions tripId={tripid}/>
-         <BottomNavBar tripid={tripid} />
-       </div>
-      ):(
-        <Loading/>
-      ) }
+        }}
+      />
+
+      {userData && tripData ? (
+        <div>
+          <Nav user={userData} />
+          <TripOverviewCard tripId={tripid} />
+          <HorizontalScrollContributions tripId={tripid} />
+
+          {userData.uid === tripData.createdBy && (
+            <div className="w-full flex justify-between items-center pr-5">
+              <Invite tripid={tripid} />
+              <Delete user={userData} tripid={tripid} trip={tripData} />
+            </div>
+          )}
+
+          <BottomNavBar tripid={tripid} />
+        </div>
+      ) : (
+        <Loading />
+      )}
     </div>
   )
 }
 
-export default Page
+export default Page;

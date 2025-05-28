@@ -5,6 +5,7 @@ import { signInWithPopup } from "firebase/auth";
 import { doc, getDoc, getDocs, setDoc, updateDoc, arrayUnion,collection,serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { motion } from 'framer-motion';
 
 function Loginbtn() {
   const router = useRouter();
@@ -115,12 +116,20 @@ const signInWithGoogle = async () => {
 
 
   return (
-    <button
-      onClick={signInWithGoogle}
-      className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-    >
-      Sign in with Google 👋
-    </button>
+    // <button
+    //   onClick={signInWithGoogle}
+    //   className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+    // >
+    //   Sign in with Google 👋
+    // </button>
+    <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-[#D5FF00] text-black px-8 py-3 rounded-full text-lg font-semibold shadow-lg transition"
+              onClick={signInWithGoogle}
+            >
+              Get Started →
+            </motion.button>
   );
 }
 
